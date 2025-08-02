@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>GitHub</title>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0" />
+  </head>
+
+  <body>
+    <div id="outer">
+      <div
+        id="inner"
+        style="background-color: aqua">
+        <button id="btn">Click</button>
+      </div>
+    </div>
+
+    <script>
+      document
+        .getElementById("outer")
+        .addEventListener("click", () => console.log("Outer clicked"), {
+          capture: true,
+        });
+
+      document
+        .getElementById("inner")
+        .addEventListener("click", e => console.log("Inner clicked"));
+
+      document.getElementById("btn").addEventListener("click", e => {
+        console.log("Btn clicked");
+      });
+    </script>
+  </body>
+</html>
