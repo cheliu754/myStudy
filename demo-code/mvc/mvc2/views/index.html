@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Page</title>
+  </head>
+  <body>
+    <form id="myForm">
+      <input
+        type="text"
+        id="inputField"
+        name="inputField"
+        placeholder="Type something..." />
+      <button
+        id="submitButton"
+        type="button">
+        Submit
+      </button>
+    </form>
+
+    <ul id="itemsList"></ul>
+
+    <script>
+      // 页面加载时获取现有数据
+      window.addEventListener('DOMContentLoaded', function() {
+        loadItems();
+      });
+
+      // 获取数据并更新列表
+      function loadItems() {
+        fetch('/api/items')
+          .then(response => response.json())
+          .then(data => {
+            updateList(data.items);
+          })
+          .catch(error => {
+            console.error('Error loading items:', error);
+          });
+      }
+
+      // 更新列表显示
+      function updateList(items) {
+        const ul = document.getElementById('itemsList');
+        ul.innerHTML = '';
+        items.forEach(item => {
+          const li = document.createElement('li');
+          li.textContent = item;
+          ul.appendChild(li);
+        });
+      }
+
+      // 处理表单提交
+      document.getElementById('submitButton').addEventListener('click', function() {
+        const inputField = document.getElementById('inputField');
+        const inputValue = inputField.value.trim();
+        
+        if (inputValue === '') {
+          alert('Please enter some text');
+          return;
+        }
+
+        // 发送POST请求
+        fetch('/submit', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ inputField: inputValue })
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            updateList(data.items);
+            inputField.value = ''; // 清空输入框
+          }
+        })
+        .catch(error => {
+          console.error('Error submitting form:', error);
+          alert('Error submitting form');
+        });
+      });
+
+      // 处理回车键提交
+      document.getElementById('inputField').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+          document.getElementById('submitButton').click();
+        }
+      });
+    </script>
+  </body>
+</html>

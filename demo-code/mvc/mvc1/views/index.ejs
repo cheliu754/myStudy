@@ -1,0 +1,30 @@
+<!-- views/index.ejs -->
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Page</title>
+  </head>
+  <body>
+    <form
+      id="myForm"
+      action="/submit"
+      method="post">
+      <input
+        type="text"
+        id="inputField"
+        name="inputField"
+        placeholder="Type something..." />
+      <button
+        id="submitButton"
+        type="submit">
+        Submit
+      </button>
+    </form>
+
+    <ul>
+      <% items.forEach(function(item) { %>
+      <li><%= item %></li>
+      <% }); %>
+    </ul>
+  </body>
+</html>
